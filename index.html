@@ -3,22 +3,26 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Kind Pest Lead Desk</title>
+<title>Kind Pest Lead Console</title>
 <style>
   :root{
     --g:#16a34a;
+    --g2:#22c55e;
     --bg:#f2fbf6;
     --panel:#ffffff;
     --ink:#0b1b12;
+    --muted:#5b7267;
     --line:#b7e4c7;
     --line2:#d9f2e3;
     --soft:#ecfdf3;
     --soft2:#f5fff8;
     --shadow:0 10px 26px rgba(0,0,0,.06);
     --r:18px;
-    --menuW:360px;
+    --menuW:340px;
   }
+
   *{box-sizing:border-box}
+
   body{
     margin:0;
     font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
@@ -26,34 +30,54 @@
     background:radial-gradient(1200px 700px at 20% -10%, #e7fff1 0%, var(--bg) 55%) fixed;
     font-size:14px;
   }
-  .wrap{max-width:1400px;margin:14px auto;padding:0 12px 28px}
-  .topbar{
-    background:rgba(255,255,255,.92);
-    border:1px solid var(--line2);
+
+  .hide{display:none !important}
+
+  .sideMenuBtn{
+    position:fixed;
+    left:12px;
+    top:14px;
+    z-index:90;
+    width:44px;
+    height:44px;
     border-radius:14px;
-    box-shadow:var(--shadow);
-    padding:12px;
-    display:grid;
-    grid-template-columns:1.2fr auto auto auto auto auto;
-    gap:10px;
-    align-items:end;
-    margin-bottom:14px;
-  }
-  .brandRow{
+    border:1px solid var(--line);
+    background:#fff;
     display:flex;
     align-items:center;
-    gap:10px;
+    justify-content:center;
+    cursor:pointer;
+    box-shadow:var(--shadow);
   }
-  .brand h1{margin:0;font-size:18px;font-weight:950;letter-spacing:.25px}
-  .miniField{display:grid;gap:4px}
-  .miniField label{font-size:11px;font-weight:900;color:#254235;white-space:nowrap}
-  .miniField input,.miniField select{
-    height:38px;padding:8px 10px;border:1px solid var(--line);
-    border-radius:12px;background:#fff;font-weight:750;font-size:13px;min-width:140px;outline:none;
+  .sideMenuBtn span,
+  .sideMenuBtn span::before,
+  .sideMenuBtn span::after{
+    display:block;
+    content:"";
+    width:18px;
+    height:2px;
+    background:#173424;
+    border-radius:2px;
+    position:relative;
   }
+  .sideMenuBtn span::before{position:absolute;top:-6px}
+  .sideMenuBtn span::after{position:absolute;top:6px}
+
+  .wrap{
+    max-width:1420px;
+    margin:14px auto;
+    padding:0 12px 28px 64px;
+  }
+
   .btn{
-    height:38px;border-radius:12px;padding:0 14px;font-weight:850;font-size:13px;
-    cursor:pointer;border:1px solid transparent;white-space:nowrap;
+    height:38px;
+    border-radius:12px;
+    padding:0 14px;
+    font-weight:850;
+    font-size:13px;
+    cursor:pointer;
+    border:1px solid transparent;
+    white-space:nowrap;
   }
   .btn-primary{background:var(--g);color:#fff;box-shadow:0 8px 18px rgba(22,163,74,.20)}
   .btn-soft{background:#eafff1;color:#0d5a2b;border-color:var(--line)}
@@ -61,16 +85,53 @@
   .btn-danger{background:#fff1f1;color:#8a1d1d;border-color:#f5caca}
   .btn:active{transform:translateY(1px)}
 
-  .hamburger{
-    width:38px;height:38px;border-radius:12px;border:1px solid var(--line);
-    background:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;
+  .topbar{
+    background:rgba(255,255,255,.92);
+    border:1px solid var(--line2);
+    border-radius:14px;
     box-shadow:var(--shadow);
+    padding:12px;
+    display:grid;
+    grid-template-columns:minmax(240px,1.4fr) auto auto auto auto;
+    gap:10px;
+    align-items:end;
+    margin-bottom:14px;
   }
-  .hamburger span,.hamburger span::before,.hamburger span::after{
-    display:block;content:"";width:18px;height:2px;background:#173424;border-radius:2px;position:relative;
+
+  .fileHeader{
+    display:grid;
+    gap:4px;
+    min-width:0;
   }
-  .hamburger span::before{position:absolute;top:-6px}
-  .hamburger span::after{position:absolute;top:6px}
+  .fileHeader .label{
+    font-size:11px;
+    font-weight:900;
+    color:#35614a;
+    letter-spacing:.04em;
+    text-transform:uppercase;
+  }
+  .fileHeader .fileName{
+    font-size:22px;
+    font-weight:950;
+    line-height:1.1;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .miniField{display:grid;gap:4px}
+  .miniField label{font-size:11px;font-weight:900;color:#254235;white-space:nowrap}
+  .miniField input,.miniField select{
+    height:38px;
+    padding:8px 10px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:#fff;
+    font-weight:750;
+    font-size:13px;
+    min-width:140px;
+    outline:none;
+  }
 
   .main{
     display:grid;
@@ -78,12 +139,14 @@
     gap:14px;
     align-items:start;
   }
+
   .column{
     display:grid;
     gap:14px;
     align-content:start;
     min-width:0;
   }
+
   .card{
     background:var(--panel);
     border:1px solid var(--line2);
@@ -92,6 +155,7 @@
     overflow:hidden;
     min-width:0;
   }
+
   .head{
     background:var(--g);
     color:#fff;
@@ -103,31 +167,68 @@
     justify-content:space-between;
     gap:10px;
   }
+
   .body{padding:12px;min-width:0}
   .stackInside{display:grid;gap:12px}
   .row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+
   .field{display:grid;gap:4px;min-width:0}
-  .field label{font-size:11px;font-weight:800;color:#29463a;line-height:1.15;white-space:nowrap}
+  .field label{
+    font-size:11px;
+    font-weight:800;
+    color:#29463a;
+    line-height:1.15;
+    white-space:nowrap;
+  }
   .field input,.field textarea,.field select{
-    width:100%;min-width:0;height:40px;border:1px solid var(--line);border-radius:12px;
-    background:#fff;padding:8px 10px;font-size:13px;font-weight:700;color:#0e1b12;outline:none;
+    width:100%;
+    min-width:0;
+    height:40px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:#fff;
+    padding:8px 10px;
+    font-size:13px;
+    font-weight:700;
+    color:#0e1b12;
+    outline:none;
   }
-  .field textarea{height:86px;resize:vertical;line-height:1.3;padding-top:10px}
+  .field textarea{
+    height:86px;
+    resize:vertical;
+    line-height:1.3;
+    padding-top:10px;
+  }
   .field input:focus,.field textarea:focus,.field select:focus{
-    border-color:#6bd39a;box-shadow:0 0 0 3px rgba(34,197,94,.15);
+    border-color:#6bd39a;
+    box-shadow:0 0 0 3px rgba(34,197,94,.15);
   }
+
   .readonly{background:var(--soft2);font-weight:900}
-  input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+
+  input[type=number]::-webkit-outer-spin-button,
+  input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
   input[type=number]{-moz-appearance:textfield}
+
   .miniPanel{
     border:1px solid var(--line2);
     border-radius:14px;
     background:var(--soft);
     padding:10px;
   }
-  .miniPanel h4{margin:0 0 8px;font-size:12px;font-weight:1000;color:#163527}
-  .chipGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+  .miniPanel h4{
+    margin:0 0 8px;
+    font-size:12px;
+    font-weight:1000;
+    color:#163527;
+  }
+
+  .chipGrid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:8px;
+  }
   .chip{
     border:1px solid var(--line);
     border-radius:999px;
@@ -147,7 +248,12 @@
   }
   .chip input{margin:0;width:16px;height:16px;accent-color:var(--g)}
   .chip.on{background:var(--soft);border-color:#7ddfa8}
-  .quoteGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+  .quoteGrid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
   .metric{
     border:1px solid var(--line);
     border-radius:14px;
@@ -159,6 +265,7 @@
   .metric .v{font-size:18px;font-weight:950;margin:6px 0 2px;line-height:1.05}
   .metric.big .v{font-size:20px}
   .metric .sub{font-size:10.5px;color:#2a4a3b;font-weight:750}
+
   .totalsPanel{
     background:var(--soft);
     border:1px solid var(--line2);
@@ -168,174 +275,371 @@
   }
   .totalsList{display:grid;gap:8px}
   .totalsRow{
-    display:flex;justify-content:space-between;gap:10px;padding:8px 10px;
-    border:1px solid var(--line);border-radius:12px;background:#fff;font-weight:900;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:8px 10px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:#fff;
+    font-weight:900;
   }
   .totalsRow .lab{font-size:11px;color:#2a4a3b}
   .totalsRow .amt{font-size:13px}
-  .toggles{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+
+  .toggles{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:8px;
+  }
   .toggle{
-    height:40px;border-radius:12px;border:1px solid var(--line);background:#fff;
-    font-weight:950;font-size:13px;cursor:pointer;color:#143022;
+    height:40px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:#fff;
+    font-weight:950;
+    font-size:13px;
+    cursor:pointer;
+    color:#143022;
   }
   .toggle.on{background:var(--g);border-color:var(--g);color:#fff}
-  details summary{cursor:pointer;font-weight:950;color:#163527;font-size:12px}
+
+  details summary{
+    cursor:pointer;
+    font-weight:950;
+    color:#163527;
+    font-size:12px;
+  }
   table{width:100%;border-collapse:collapse;font-size:11.5px}
   th,td{border:1px solid var(--line);padding:6px}
   th{text-align:left;background:#fff}
   td.right{text-align:right;font-weight:950}
-  .adjustGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+  .adjustGrid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
   .adjustBox{
-    border:1px solid var(--line);border-radius:14px;background:#fff;padding:12px;min-width:0;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:#fff;
+    padding:12px;
+    min-width:0;
   }
   .adjustBox h5{
-    margin:0 0 10px;font-size:12px;font-weight:1000;color:#274536;
-    display:flex;justify-content:space-between;gap:8px;align-items:center;
+    margin:0 0 10px;
+    font-size:12px;
+    font-weight:1000;
+    color:#274536;
+    display:flex;
+    justify-content:space-between;
+    gap:8px;
+    align-items:center;
   }
   .suggestBadge{
-    display:inline-block;background:rgba(34,197,94,.16);border:1px solid rgba(34,197,94,.26);
-    color:#0f5130;font-weight:1000;padding:3px 8px;border-radius:999px;margin-right:6px;
-    line-height:1;font-size:11px;vertical-align:middle;white-space:nowrap;
+    display:inline-block;
+    background:rgba(34,197,94,.16);
+    border:1px solid rgba(34,197,94,.26);
+    color:#0f5130;
+    font-weight:1000;
+    padding:3px 8px;
+    border-radius:999px;
+    margin-right:6px;
+    line-height:1;
+    font-size:11px;
+    vertical-align:middle;
+    white-space:nowrap;
   }
   .suggestNum{font-weight:1000;color:#0b3d23;white-space:nowrap}
-  .smallGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .statusBox{
-    border:1px dashed var(--line);border-radius:14px;padding:12px;background:#fff;
-    font-size:12px;font-weight:800;color:#244033;line-height:1.5;
-  }
-  .muted{color:#5f7668}
-  .hide{display:none !important}
 
-  /* drawer */
-  .drawerBackdrop{
-    position:fixed;inset:0;background:rgba(0,0,0,.22);display:none;z-index:30;
+  .smallGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+  .statusBox{
+    border:1px dashed var(--line);
+    border-radius:14px;
+    padding:12px;
+    background:#fff;
+    font-size:12px;
+    font-weight:800;
+    color:#244033;
+    line-height:1.5;
   }
-  .drawerBackdrop.show{display:block}
-  .drawer{
-    position:fixed;top:0;right:0;height:100vh;width:var(--menuW);max-width:100%;
-    background:#fff;border-left:1px solid var(--line2);box-shadow:-8px 0 30px rgba(0,0,0,.12);
-    transform:translateX(100%);transition:transform .22s ease;z-index:40;display:grid;
-    grid-template-rows:auto auto 1fr;
+
+  .collapseBtn{
+    background:#fff;
+    color:#173424;
+    border:1px solid var(--line);
+    border-radius:10px;
+    font-weight:900;
+    padding:8px 10px;
+    cursor:pointer;
   }
-  .drawer.show{transform:translateX(0)}
-  .drawerHead{
-    padding:14px;border-bottom:1px solid var(--line2);display:flex;align-items:center;justify-content:space-between;
-    background:var(--soft2);
+
+  /* console screen */
+  .consoleWrap{
+    display:grid;
+    gap:14px;
   }
-  .drawerTitle{font-size:16px;font-weight:950}
-  .drawerNav{
-    padding:10px;border-bottom:1px solid var(--line2);display:grid;gap:8px;
+
+  .consoleHeader{
+    background:rgba(255,255,255,.92);
+    border:1px solid var(--line2);
+    border-radius:14px;
+    box-shadow:var(--shadow);
+    padding:12px;
+    display:grid;
+    grid-template-columns:minmax(180px,1fr) minmax(220px,1fr) 180px 180px auto;
+    gap:10px;
+    align-items:end;
   }
-  .navBtn{
-    border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;cursor:pointer;
-    font-weight:900;text-align:left;
+
+  .consoleTitle{
+    font-size:22px;
+    font-weight:950;
+    line-height:1.1;
   }
-  .navBtn.active{background:var(--g);color:#fff;border-color:var(--g)}
-  .drawerBody{padding:12px;overflow:auto;display:grid;gap:12px;align-content:start}
+
+  .consoleSub{
+    font-size:12px;
+    font-weight:800;
+    color:var(--muted);
+    margin-top:4px;
+  }
+
+  .consoleBoard{
+    display:grid;
+    grid-template-columns:repeat(7, minmax(220px, 1fr));
+    gap:12px;
+    overflow:auto;
+    padding-bottom:4px;
+  }
+
+  .lane{
+    background:rgba(255,255,255,.75);
+    border:1px solid var(--line2);
+    border-radius:18px;
+    box-shadow:var(--shadow);
+    min-width:220px;
+    overflow:hidden;
+    display:grid;
+    grid-template-rows:auto 1fr;
+  }
+
+  .laneHead{
+    background:#fff;
+    border-bottom:1px solid var(--line2);
+    padding:10px 12px;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    align-items:center;
+  }
+
+  .laneTitle{font-weight:950;font-size:13px}
+  .laneCount{
+    min-width:26px;
+    height:26px;
+    border-radius:999px;
+    background:var(--soft);
+    border:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:11px;
+    font-weight:900;
+    color:#214132;
+  }
+
+  .laneBody{
+    padding:10px;
+    display:grid;
+    gap:10px;
+    align-content:start;
+    min-height:120px;
+  }
+
   .leadCard{
-    border:1px solid var(--line);background:#fff;border-radius:14px;padding:12px;cursor:pointer;
+    border:1px solid var(--line);
+    background:#fff;
+    border-radius:14px;
+    padding:12px;
+    cursor:pointer;
   }
-  .leadCard.active{border-color:var(--g);box-shadow:0 0 0 2px rgba(22,163,74,.12)}
-  .leadTop{display:flex;justify-content:space-between;gap:10px;align-items:start}
+
+  .leadCard:hover{box-shadow:0 6px 18px rgba(0,0,0,.06)}
+  .leadTop{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    align-items:start;
+  }
   .leadName{font-weight:950}
-  .leadMeta{font-size:12px;color:#4c6257;line-height:1.45;margin-top:6px}
-  .badge{
-    display:inline-flex;align-items:center;justify-content:center;
-    border-radius:999px;padding:4px 8px;font-size:11px;font-weight:900;
-    border:1px solid var(--line);background:var(--soft2);color:#224233;
+  .leadMeta{
+    font-size:12px;
+    color:#4c6257;
+    line-height:1.45;
+    margin-top:6px;
   }
-  .leadActions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:999px;
+    padding:4px 8px;
+    font-size:11px;
+    font-weight:900;
+    border:1px solid var(--line);
+    background:var(--soft2);
+    color:#224233;
+  }
+
+  .funnelGrid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:12px;
+  }
+
+  .funnelCard{
+    border:1px solid var(--line2);
+    background:#fff;
+    border-radius:16px;
+    padding:14px;
+    box-shadow:var(--shadow);
+    display:grid;
+    gap:10px;
+  }
+
+  .funnelCard h4{
+    margin:0;
+    font-size:14px;
+    font-weight:950;
+  }
+
+  .funnelCard p{
+    margin:0;
+    font-size:12px;
+    color:var(--muted);
+    line-height:1.45;
+  }
+
+  .funnelMini{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+
+  .funnelTag{
+    font-size:11px;
+    font-weight:900;
+    border:1px solid var(--line);
+    background:var(--soft);
+    color:#214132;
+    border-radius:999px;
+    padding:4px 8px;
+  }
+
   .emptyState{
-    border:1px dashed var(--line);border-radius:14px;padding:14px;background:#fff;color:#567064;font-weight:800;
+    border:1px dashed var(--line);
+    border-radius:14px;
+    padding:14px;
+    background:#fff;
+    color:#567064;
+    font-weight:800;
   }
 
   @media (max-width:1180px){
     .main{grid-template-columns:1fr}
     .topbar{grid-template-columns:1fr 1fr 1fr}
-    .brand{grid-column:1/-1}
+    .consoleHeader{grid-template-columns:1fr 1fr}
+    .wrap{padding-left:12px}
+    .sideMenuBtn{left:auto;right:12px}
   }
+
   @media (max-width:760px){
     .topbar{grid-template-columns:1fr}
+    .consoleHeader{grid-template-columns:1fr}
     .row2,.row3,.quoteGrid,.adjustGrid,.smallGrid,.chipGrid,.toggles{grid-template-columns:1fr}
     .miniField input,.miniField select{min-width:0}
-    .drawer{width:100%}
   }
 </style>
 </head>
 <body>
+
+<button class="sideMenuBtn" id="menuBtn" type="button" title="Open Lead Console"><span></span></button>
+
 <div class="wrap">
-  <div class="topbar">
-    <div class="brandRow">
-      <div class="brand"><h1>LEAD DESK</h1></div>
-      <button class="hamburger" id="menuBtn" type="button" title="Open menu"><span></span></button>
+
+  <!-- FORM SCREEN -->
+  <div id="formScreen">
+    <div class="topbar">
+      <div class="fileHeader">
+        <div class="label">Lead Console</div>
+        <div class="fileName" id="fileNameDisplay">Untitled Lead</div>
+      </div>
+
+      <div class="miniField">
+        <label>Date</label>
+        <input id="topDate" type="date">
+      </div>
+
+      <div class="miniField">
+        <label>Time</label>
+        <input id="topTime" type="time">
+      </div>
+
+      <div class="miniField">
+        <label>Owner</label>
+        <select id="leadOwner">
+          <option value="My Desk">My Desk</option>
+          <option value="CSR 1">CSR 1</option>
+          <option value="CSR 2">CSR 2</option>
+          <option value="CSR 3">CSR 3</option>
+        </select>
+      </div>
+
+      <button class="btn btn-primary" id="newLeadBtn" type="button">NEW LEAD</button>
     </div>
 
-    <div class="miniField">
-      <label>Date</label>
-      <input id="topDate" type="date">
-    </div>
-
-    <div class="miniField">
-      <label>Time</label>
-      <input id="topTime" type="time">
-    </div>
-
-    <div class="miniField">
-      <label>Owner</label>
-      <select id="leadOwner">
-        <option value="My Desk">My Desk</option>
-        <option value="CSR 1">CSR 1</option>
-        <option value="CSR 2">CSR 2</option>
-        <option value="CSR 3">CSR 3</option>
-      </select>
-    </div>
-
-    <button class="btn btn-primary" id="newLeadBtn" type="button">NEW LEAD</button>
-    <button class="btn btn-soft" id="copyBtn" type="button">COPY QUOTE</button>
-  </div>
-
-  <div class="main">
-    <!-- LEFT -->
-    <div class="column">
-      <section class="card">
-        <div class="head">
-          <span>CUSTOMER INFO</span>
-          <span class="muted" id="activeLeadLabel">Lead: —</span>
-        </div>
-        <div class="body stackInside">
-          <div class="field"><label>CUSTOMER NAME</label><input id="custName" type="text"></div>
-          <div class="field"><label>LEAD SOURCE</label><input id="custLeadSource" type="text"></div>
-
-          <div class="row2">
-            <div class="field"><label>PHONE</label><input id="custPhone" type="tel"></div>
-            <div class="field"><label>EMAIL</label><input id="custEmail" type="email"></div>
+    <div class="main">
+      <div class="column">
+        <section class="card">
+          <div class="head">
+            <span>CUSTOMER INFO</span>
           </div>
+          <div class="body stackInside">
+            <div class="field"><label>CUSTOMER NAME</label><input id="custName" type="text"></div>
+            <div class="field"><label>LEAD SOURCE</label><input id="custLeadSource" type="text"></div>
 
-          <div class="field"><label>ADDRESS</label><input id="custAddress" type="text"></div>
-
-          <div class="row3">
-            <div class="field"><label>CITY</label><input id="custCity" type="text"></div>
-            <div class="field"><label>STATE</label><input id="custState" type="text" value="NC"></div>
-            <div class="field"><label>ZIP</label><input id="custZip" type="text"></div>
-          </div>
-
-          <div class="row2">
-            <div class="field"><label>COUNTY</label><input id="custCounty" type="text"></div>
-            <div class="field">
-              <label>STATUS</label>
-              <select id="leadStatus">
-                <option>Pending</option>
-                <option>Sold QT</option>
-                <option>Sold Other</option>
-                <option>Declined</option>
-                <option>Misc</option>
-                <option>Sold Bundle</option>
-                <option>No Contact Yet</option>
-              </select>
+            <div class="row2">
+              <div class="field"><label>PHONE</label><input id="custPhone" type="tel"></div>
+              <div class="field"><label>EMAIL</label><input id="custEmail" type="email"></div>
             </div>
-          </div>
 
-          <div class="row2">
+            <div class="field"><label>ADDRESS</label><input id="custAddress" type="text"></div>
+
+            <div class="row3">
+              <div class="field"><label>CITY</label><input id="custCity" type="text"></div>
+              <div class="field"><label>STATE</label><input id="custState" type="text" value="NC"></div>
+              <div class="field"><label>ZIP</label><input id="custZip" type="text"></div>
+            </div>
+
+            <div class="row2">
+              <div class="field"><label>COUNTY</label><input id="custCounty" type="text"></div>
+              <div class="field">
+                <label>STATUS</label>
+                <select id="leadStatus">
+                  <option>Pending</option>
+                  <option>Sold QT</option>
+                  <option>Sold Other</option>
+                  <option>Declined</option>
+                  <option>Misc</option>
+                  <option>Sold Bundle</option>
+                  <option>No Contact Yet</option>
+                </select>
+              </div>
+            </div>
+
             <div class="field">
               <label>PAYMENT TYPE</label>
               <select id="paymentType">
@@ -346,219 +650,284 @@
                 <option value="Autopay">Autopay</option>
               </select>
             </div>
-            <div class="field">
-              <label>LAST UPDATED</label>
-              <input id="lastUpdatedRead" class="readonly" type="text" readonly>
+
+            <div class="field"><label>SERVICES NEEDED</label><input id="custServices" type="text"></div>
+            <div class="field"><label>NOTES</label><textarea id="custNotes"></textarea></div>
+
+            <div class="miniPanel" style="background:#fff;border-style:dashed;">
+              <h4>CHECKLIST</h4>
+              <div class="chipGrid">
+                <label class="chip"><input type="checkbox" id="chkINT"> INT</label>
+                <label class="chip"><input type="checkbox" id="chkPS"> PS</label>
+                <label class="chip"><input type="checkbox" id="chkWD"> WD</label>
+                <label class="chip"><input type="checkbox" id="chkGR"> GR</label>
+                <label class="chip"><input type="checkbox" id="chkLB"> LB</label>
+                <label class="chip"><input type="checkbox" id="chkRS"> RS</label>
+              </div>
+              <div style="margin-top:10px">
+                <label class="chip" style="width:100%;justify-content:center;">
+                  <input type="checkbox" id="chkAutopay"> AUTOPAY
+                </label>
+              </div>
             </div>
           </div>
+        </section>
+      </div>
 
-          <div class="field"><label>SERVICES NEEDED</label><input id="custServices" type="text"></div>
-          <div class="field"><label>NOTES</label><textarea id="custNotes"></textarea></div>
+      <div class="column">
+        <section class="card">
+          <div class="head"><span>QUOTE</span></div>
+          <div class="body">
+            <div class="quoteGrid">
+              <div class="metric">
+                <div class="k">QT RATE</div>
+                <div class="v" id="qtRateDisplay">$0.00</div>
+                <div class="sub">MONTHLY <span id="qtMonthlyDisplay">$0</span></div>
+              </div>
+              <div class="metric">
+                <div class="k">SM RATE</div>
+                <div class="v" id="smRateDisplay">$0.00</div>
+                <div class="sub">MONTHLY <span id="smMonthlyDisplay">$0</span></div>
+              </div>
+              <div class="metric big">
+                <div class="k">TOTAL MONTHLY</div>
+                <div class="v" id="totalMonthlyDisplay">$0 / mo</div>
+                <div class="sub">YIF <span id="totalYifDisplay">$0.00</span></div>
+              </div>
+              <div class="metric big">
+                <div class="k">BUNDLE MONTHLY</div>
+                <div class="v" id="bundleMonthlyDisplay">$0 / mo</div>
+                <div class="sub">YIF <span id="bundleYifDisplay">$0.00</span></div>
+              </div>
+            </div>
 
-          <div class="miniPanel" style="background:#fff;border-style:dashed;">
-            <h4>CHECKLIST</h4>
-            <div class="chipGrid">
-              <label class="chip"><input type="checkbox" id="chkINT"> INT</label>
-              <label class="chip"><input type="checkbox" id="chkPS"> PS</label>
-              <label class="chip"><input type="checkbox" id="chkWD"> WD</label>
-              <label class="chip"><input type="checkbox" id="chkGR"> GR</label>
-              <label class="chip"><input type="checkbox" id="chkLB"> LB</label>
-              <label class="chip"><input type="checkbox" id="chkRS"> RS</label>
-            </div>
-            <div style="margin-top:10px">
-              <label class="chip" style="width:100%;justify-content:center;">
-                <input type="checkbox" id="chkAutopay"> AUTOPAY
-              </label>
-            </div>
-          </div>
-
-          <div class="statusBox" id="saveStatusBox">
-            Autosave: ready<br>
-            Lead Desk mode: local browser storage
-          </div>
-        </div>
-      </section>
-    </div>
-
-    <!-- CENTER -->
-    <div class="column">
-      <section class="card">
-        <div class="head"><span>QUOTE</span></div>
-        <div class="body">
-          <div class="quoteGrid">
-            <div class="metric">
-              <div class="k">QT RATE</div>
-              <div class="v" id="qtRateDisplay">$0.00</div>
-              <div class="sub">MONTHLY <span id="qtMonthlyDisplay">$0</span></div>
-            </div>
-            <div class="metric">
-              <div class="k">SM RATE</div>
-              <div class="v" id="smRateDisplay">$0.00</div>
-              <div class="sub">MONTHLY <span id="smMonthlyDisplay">$0</span></div>
-            </div>
-            <div class="metric big">
-              <div class="k">TOTAL MONTHLY</div>
-              <div class="v" id="totalMonthlyDisplay">$0 / mo</div>
-              <div class="sub">YIF <span id="totalYifDisplay">$0.00</span></div>
-            </div>
-            <div class="metric big">
-              <div class="k">BUNDLE MONTHLY</div>
-              <div class="v" id="bundleMonthlyDisplay">$0 / mo</div>
-              <div class="sub">YIF <span id="bundleYifDisplay">$0.00</span></div>
+            <div class="totalsPanel">
+              <div class="totalsList">
+                <div class="totalsRow"><span class="lab">BUNDLE QT</span><span class="amt" id="bundleQtRow">$0.00</span></div>
+                <div class="totalsRow"><span class="lab">PLAIN MONTHLY</span><span class="amt" id="plainMonthlyRow">$0 / mo</span></div>
+                <div class="totalsRow"><span class="lab">BUNDLE MONTHLY</span><span class="amt" id="bundleMonthlyRow">$0 / mo</span></div>
+                <div class="totalsRow"><span class="lab">PLAIN YIF</span><span class="amt" id="plainYifRow">$0.00</span></div>
+                <div class="totalsRow"><span class="lab">BUNDLE YIF</span><span class="amt" id="bundleYifRow">$0.00</span></div>
+              </div>
             </div>
           </div>
+        </section>
 
-          <div class="totalsPanel">
-            <div class="totalsList">
-              <div class="totalsRow"><span class="lab">BUNDLE QT</span><span class="amt" id="bundleQtRow">$0.00</span></div>
-              <div class="totalsRow"><span class="lab">PLAIN MONTHLY</span><span class="amt" id="plainMonthlyRow">$0 / mo</span></div>
-              <div class="totalsRow"><span class="lab">BUNDLE MONTHLY</span><span class="amt" id="bundleMonthlyRow">$0 / mo</span></div>
-              <div class="totalsRow"><span class="lab">PLAIN YIF</span><span class="amt" id="plainYifRow">$0.00</span></div>
-              <div class="totalsRow"><span class="lab">BUNDLE YIF</span><span class="amt" id="bundleYifRow">$0.00</span></div>
+        <section class="card">
+          <div class="head"><span>SERVICES</span></div>
+          <div class="body">
+            <div class="toggles">
+              <button class="toggle on" id="btnQT" type="button">QT</button>
+              <button class="toggle" id="btnSM" type="button">SM</button>
+              <button class="toggle" id="btnYIF" type="button">YIF</button>
+              <button class="toggle" id="btnBundle" type="button">BUNDLE</button>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
-      <section class="card">
-        <div class="head"><span>SERVICES</span></div>
-        <div class="body">
-          <div class="toggles">
-            <button class="toggle on" id="btnQT" type="button">QT</button>
-            <button class="toggle" id="btnSM" type="button">SM</button>
-            <button class="toggle" id="btnYIF" type="button">YIF</button>
-            <button class="toggle" id="btnBundle" type="button">BUNDLE</button>
+      <div class="column">
+        <section class="card">
+          <div class="head"><span>MEASUREMENTS</span></div>
+          <div class="body">
+            <div class="miniPanel">
+              <h4>ENTER</h4>
+              <div class="row2">
+                <div class="field"><label>SQFT</label><input id="sqft" type="number" min="0" step="1"></div>
+                <div class="field"><label>LF</label><input id="lf" type="number" min="0" step="1"></div>
+              </div>
+              <details style="margin-top:10px">
+                <summary>PRICING TIERS</summary>
+                <div style="margin-top:8px;overflow:auto">
+                  <table>
+                    <thead><tr><th>SQFT</th><th class="right">QT</th></tr></thead>
+                    <tbody id="tiersTable"></tbody>
+                  </table>
+                </div>
+              </details>
+            </div>
           </div>
-        </div>
-      </section>
-    </div>
+        </section>
 
-    <!-- RIGHT -->
-    <div class="column">
-      <section class="card">
-        <div class="head"><span>MEASUREMENTS</span></div>
-        <div class="body">
-          <div class="miniPanel">
-            <h4>ENTER</h4>
+        <section class="card">
+          <div class="head"><span>ADJUST</span></div>
+          <div class="body">
+            <div class="adjustGrid">
+              <div class="adjustBox">
+                <h5>
+                  <span>QT</span>
+                  <span><span class="suggestBadge">SUGGESTED</span><span id="qtSuggestedLabel" class="suggestNum">$0.00</span></span>
+                </h5>
+                <div class="smallGrid">
+                  <div class="field"><label>QT QUOTE</label><input id="qtQuote" type="number" step="0.01"></div>
+                  <div class="field"><label>INITIAL</label><input id="qtInit" type="number" step="1"></div>
+                  <div class="field"><label>MONTHLY</label><input id="qtMonthlyRead" class="readonly" type="text" readonly></div>
+                  <div class="field"><label>YIF</label><input id="qtYifRead" class="readonly" type="text" readonly></div>
+                </div>
+              </div>
+
+              <div class="adjustBox">
+                <h5>
+                  <span>SM</span>
+                  <span><span class="suggestBadge">SUGGESTED</span><span id="smSuggestedLabel" class="suggestNum">$0.00</span></span>
+                </h5>
+                <div class="smallGrid">
+                  <div class="field"><label>SM QUOTE</label><input id="smQuote" type="number" step="0.01"></div>
+                  <div class="field"><label>INSTALL FEE</label><input id="smInstall" type="number" step="1" value="0"></div>
+                  <div class="field"><label>MONTHLY</label><input id="smMonthlyRead" class="readonly" type="text" readonly></div>
+                  <div class="field"><label>YIF</label><input id="smYifRead" class="readonly" type="text" readonly></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="head">
+            <span>PROPERTIES</span>
+            <button class="collapseBtn" id="togglePropertiesBtn" type="button">Hide</button>
+          </div>
+          <div class="body stackInside" id="propertiesBody">
+            <div class="statusBox" id="saveStatusBox">
+              Autosave: ready<br>
+              Lead Console mode: local browser storage
+            </div>
+
+            <div class="statusBox" id="propertiesBox">
+              Owner: —<br>
+              Status: —<br>
+              Created: —<br>
+              Updated: —
+            </div>
+
             <div class="row2">
-              <div class="field"><label>SQFT</label><input id="sqft" type="number" min="0" step="1"></div>
-              <div class="field"><label>LF</label><input id="lf" type="number" min="0" step="1"></div>
+              <button class="btn btn-soft" type="button" id="duplicateLeadBtn">DUPLICATE LEAD</button>
+              <button class="btn btn-danger" type="button" id="deleteLeadBtn">DELETE LEAD</button>
             </div>
-            <details style="margin-top:10px">
-              <summary>PRICING TIERS</summary>
-              <div style="margin-top:8px;overflow:auto">
-                <table>
-                  <thead><tr><th>SQFT</th><th class="right">QT</th></tr></thead>
-                  <tbody id="tiersTable"></tbody>
-                </table>
-              </div>
-            </details>
           </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONSOLE SCREEN -->
+  <div id="consoleScreen" class="hide">
+    <div class="consoleWrap">
+      <div class="consoleHeader">
+        <div>
+          <div class="consoleTitle">Lead Console</div>
+          <div class="consoleSub">All leads, saved funnels, and campaign views live here.</div>
         </div>
-      </section>
+
+        <div class="field" style="margin:0">
+          <label>SEARCH LEADS</label>
+          <input id="consoleSearch" type="text" placeholder="Name, phone, address">
+        </div>
+
+        <div class="field" style="margin:0">
+          <label>OWNER</label>
+          <select id="consoleOwnerFilter">
+            <option value="All">All Owners</option>
+            <option value="My Desk">My Desk</option>
+            <option value="CSR 1">CSR 1</option>
+            <option value="CSR 2">CSR 2</option>
+            <option value="CSR 3">CSR 3</option>
+          </select>
+        </div>
+
+        <div class="field" style="margin:0">
+          <label>STATUS</label>
+          <select id="consoleStatusFilter">
+            <option value="All">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="Sold QT">Sold QT</option>
+            <option value="Sold Other">Sold Other</option>
+            <option value="Declined">Declined</option>
+            <option value="Misc">Misc</option>
+            <option value="Sold Bundle">Sold Bundle</option>
+            <option value="No Contact Yet">No Contact Yet</option>
+          </select>
+        </div>
+
+        <div style="display:flex;gap:10px;align-items:end;justify-content:flex-end;">
+          <button class="btn btn-soft" id="newLeadFromConsoleBtn" type="button">+ NEW LEAD</button>
+          <button class="btn btn-primary" id="returnToLeadBtn" type="button">OPEN CURRENT LEAD</button>
+        </div>
+      </div>
 
       <section class="card">
-        <div class="head"><span>ADJUST</span></div>
+        <div class="head"><span>MY CAMPAIGNS / LEAD FUNNELS</span></div>
         <div class="body">
-          <div class="adjustGrid">
-            <div class="adjustBox">
-              <h5>
-                <span>QT</span>
-                <span><span class="suggestBadge">SUGGESTED</span><span id="qtSuggestedLabel" class="suggestNum">$0.00</span></span>
-              </h5>
-              <div class="smallGrid">
-                <div class="field"><label>QT QUOTE</label><input id="qtQuote" type="number" step="0.01"></div>
-                <div class="field"><label>INITIAL</label><input id="qtInit" type="number" step="1"></div>
-                <div class="field"><label>MONTHLY</label><input id="qtMonthlyRead" class="readonly" type="text" readonly></div>
-                <div class="field"><label>YIF</label><input id="qtYifRead" class="readonly" type="text" readonly></div>
+          <div class="funnelGrid">
+            <div class="funnelCard">
+              <h4>Pending Follow-Up</h4>
+              <p>Use this as your daily working queue for active leads that still need movement.</p>
+              <div class="funnelMini">
+                <span class="funnelTag">Status: Pending</span>
+                <span class="funnelTag">Owner filter optional</span>
               </div>
+              <button class="btn btn-soft funnelFilterBtn" data-funnel="pending">Open Funnel</button>
             </div>
 
-            <div class="adjustBox">
-              <h5>
-                <span>SM</span>
-                <span><span class="suggestBadge">SUGGESTED</span><span id="smSuggestedLabel" class="suggestNum">$0.00</span></span>
-              </h5>
-              <div class="smallGrid">
-                <div class="field"><label>SM QUOTE</label><input id="smQuote" type="number" step="0.01"></div>
-                <div class="field"><label>INSTALL FEE</label><input id="smInstall" type="number" step="1" value="0"></div>
-                <div class="field"><label>MONTHLY</label><input id="smMonthlyRead" class="readonly" type="text" readonly></div>
-                <div class="field"><label>YIF</label><input id="smYifRead" class="readonly" type="text" readonly></div>
+            <div class="funnelCard">
+              <h4>No Contact Yet</h4>
+              <p>Fast callback queue for inbound leads that were created but not reached yet.</p>
+              <div class="funnelMini">
+                <span class="funnelTag">Status: No Contact Yet</span>
               </div>
+              <button class="btn btn-soft funnelFilterBtn" data-funnel="nocontact">Open Funnel</button>
+            </div>
+
+            <div class="funnelCard">
+              <h4>Sold Bundle Wins</h4>
+              <p>See your bundle closes in one place for performance review and callbacks.</p>
+              <div class="funnelMini">
+                <span class="funnelTag">Status: Sold Bundle</span>
+              </div>
+              <button class="btn btn-soft funnelFilterBtn" data-funnel="bundle">Open Funnel</button>
+            </div>
+
+            <div class="funnelCard">
+              <h4>Sentricon Work Queue</h4>
+              <p>For now this shows leads where SM is on. Later this becomes your quote-email campaign view.</p>
+              <div class="funnelMini">
+                <span class="funnelTag">SM selected</span>
+                <span class="funnelTag">Campaign ready</span>
+              </div>
+              <button class="btn btn-soft funnelFilterBtn" data-funnel="sm">Open Funnel</button>
             </div>
           </div>
         </div>
       </section>
 
       <section class="card">
-        <div class="head"><span>LEAD ACTIONS</span></div>
-        <div class="body stackInside">
-          <div class="statusBox" id="pushPreview">
-            Current lead saved locally.<br>
-            Use menu to switch leads instantly.<br>
-            Last Lead works from your most recent active lead.
-          </div>
-          <div class="row2">
-            <button class="btn btn-soft" type="button" id="duplicateLeadBtn">DUPLICATE LEAD</button>
-            <button class="btn btn-danger" type="button" id="deleteLeadBtn">DELETE LEAD</button>
-          </div>
+        <div class="head"><span>LEADS BY STATUS</span></div>
+        <div class="body">
+          <div class="consoleBoard" id="consoleBoard"></div>
         </div>
       </section>
     </div>
   </div>
 </div>
 
-<div class="drawerBackdrop" id="drawerBackdrop"></div>
-
-<aside class="drawer" id="drawer">
-  <div class="drawerHead">
-    <div class="drawerTitle">Lead Desk</div>
-    <button class="btn btn-soft" id="closeMenuBtn" type="button">Close</button>
-  </div>
-
-  <div class="drawerNav">
-    <button class="navBtn active" data-view="main">Main</button>
-    <button class="navBtn" data-view="last">Last Lead</button>
-    <button class="navBtn" data-view="mine">My Leads</button>
-  </div>
-
-  <div class="drawerBody">
-    <div class="leadActions">
-      <button class="btn btn-primary" id="drawerNewLeadBtn" type="button">+ NEW LEAD</button>
-      <button class="btn btn-soft" id="refreshDrawerBtn" type="button">REFRESH</button>
-    </div>
-
-    <div class="field">
-      <label>SEARCH</label>
-      <input id="leadSearch" type="text" placeholder="Name, phone, address">
-    </div>
-
-    <div class="field">
-      <label>FILTER STATUS</label>
-      <select id="filterStatus">
-        <option value="All">All</option>
-        <option value="Pending">Pending</option>
-        <option value="Sold QT">Sold QT</option>
-        <option value="Sold Other">Sold Other</option>
-        <option value="Declined">Declined</option>
-        <option value="Misc">Misc</option>
-        <option value="Sold Bundle">Sold Bundle</option>
-        <option value="No Contact Yet">No Contact Yet</option>
-      </select>
-    </div>
-
-    <div id="leadList"></div>
-  </div>
-</aside>
-
 <script>
 (() => {
-  const STORAGE_KEY = 'kindLeadDesk.v1';
-  const LAST_LEAD_KEY = 'kindLeadDesk.lastLeadId';
+  const STORAGE_KEY = 'kindLeadConsole.v3';
+  const LAST_LEAD_KEY = 'kindLeadConsole.lastLeadId';
   const YIF_DISCOUNT = 0.05;
   const SM_RATE_PER_LF = 1.5;
   const SM_MIN_YEARLY = 300;
   const BUNDLE_DISC = 10;
+
+  const STATUS_ORDER = [
+    'No Contact Yet',
+    'Pending',
+    'Sold QT',
+    'Sold Bundle',
+    'Sold Other',
+    'Declined',
+    'Misc'
+  ];
 
   const tiers = [
     {min:1000,max:1499,qt:139},
@@ -572,7 +941,7 @@
   const $ = (id) => document.getElementById(id);
 
   let activeLeadId = null;
-  let currentView = 'main';
+  let currentScreen = 'form';
 
   const state = {
     qtOn: true,
@@ -581,8 +950,6 @@
     bundleOn: false,
     qtInitTouched: false
   };
-
-  const ownerSelect = $('leadOwner');
 
   function money(n){
     const x = Number.isFinite(n) ? n : 0;
@@ -649,6 +1016,15 @@
     return d.toLocaleString();
   }
 
+  function escapeHtml(str){
+    return String(str ?? '')
+      .replaceAll('&','&amp;')
+      .replaceAll('<','&lt;')
+      .replaceAll('>','&gt;')
+      .replaceAll('"','&quot;')
+      .replaceAll("'","&#39;");
+  }
+
   function getStore(){
     try{
       return JSON.parse(localStorage.getItem(STORAGE_KEY)) || { leads: [] };
@@ -674,7 +1050,7 @@
     const now = new Date().toISOString();
     return {
       id: makeLeadId(),
-      owner: ownerSelect.value || 'My Desk',
+      owner: $('leadOwner').value || 'My Desk',
       status: 'Pending',
       createdAt: now,
       updatedAt: now,
@@ -734,7 +1110,7 @@
 
   function collectLeadFromForm(){
     const existing = getLeadById(activeLeadId) || getBlankLead();
-    existing.owner = ownerSelect.value || 'My Desk';
+    existing.owner = $('leadOwner').value || 'My Desk';
     existing.status = $('leadStatus').value;
     existing.topDate = $('topDate').value || '';
     existing.topTime = $('topTime').value || '';
@@ -780,9 +1156,22 @@
     return existing;
   }
 
+  function updateFileName(lead){
+    $('fileNameDisplay').textContent = (lead?.customer?.name?.trim() || 'Untitled Lead');
+  }
+
+  function updatePropertiesPanel(lead){
+    $('propertiesBox').innerHTML = `
+      Owner: ${escapeHtml(lead.owner || '—')}<br>
+      Status: ${escapeHtml(lead.status || '—')}<br>
+      Created: ${escapeHtml(formatDateTime(lead.createdAt) || '—')}<br>
+      Updated: ${escapeHtml(formatDateTime(lead.updatedAt) || '—')}
+    `;
+  }
+
   function loadLeadToForm(lead){
     activeLeadId = lead.id;
-    ownerSelect.value = lead.owner || 'My Desk';
+    $('leadOwner').value = lead.owner || 'My Desk';
     $('leadStatus').value = lead.status || 'Pending';
     $('topDate').value = lead.topDate || '';
     $('topTime').value = lead.topTime || '';
@@ -820,21 +1209,22 @@
     $('smQuote').value = lead.pricing?.smQuote || '';
     $('smInstall').value = lead.pricing?.smInstall || '0';
 
-    $('activeLeadLabel').textContent = `Lead: ${lead.customer?.name || lead.id}`;
-    $('lastUpdatedRead').value = formatDateTime(lead.updatedAt);
     updateChecklistChips();
     updateTogglesUI();
+    updateFileName(lead);
+    updatePropertiesPanel(lead);
+    $('saveStatusBox').innerHTML = `Autosave: saved<br>Updated: ${escapeHtml(formatDateTime(lead.updatedAt) || '—')}`;
     calc();
-    renderLeadList();
+    renderConsole();
   }
 
   function autosave(){
     const lead = collectLeadFromForm();
     saveLeadObject(lead);
-    $('activeLeadLabel').textContent = `Lead: ${lead.customer?.name || lead.id}`;
-    $('lastUpdatedRead').value = formatDateTime(lead.updatedAt);
-    $('saveStatusBox').innerHTML = `Autosave: saved<br>Updated: ${formatDateTime(lead.updatedAt)}`;
-    renderLeadList();
+    updateFileName(lead);
+    updatePropertiesPanel(lead);
+    $('saveStatusBox').innerHTML = `Autosave: saved<br>Updated: ${escapeHtml(formatDateTime(lead.updatedAt) || '—')}`;
+    renderConsole();
   }
 
   let saveTimer = null;
@@ -847,6 +1237,7 @@
     const lead = getBlankLead();
     saveLeadObject(lead);
     loadLeadToForm(lead);
+    showFormScreen();
   }
 
   function duplicateCurrentLead(){
@@ -866,112 +1257,6 @@
     if(lead){
       loadLeadToForm(lead);
     }
-  }
-
-  function renderLeadList(){
-    const box = $('leadList');
-    const store = getStore();
-    const q = ($('leadSearch').value || '').trim().toLowerCase();
-    const statusFilter = $('filterStatus').value;
-    const owner = ownerSelect.value || 'My Desk';
-
-    let leads = [...store.leads];
-
-    if(currentView === 'last'){
-      const lastId = localStorage.getItem(LAST_LEAD_KEY);
-      leads = leads.filter(l => l.id === lastId);
-    } else if(currentView === 'mine'){
-      leads = leads.filter(l => (l.owner || '') === owner);
-    }
-
-    if(statusFilter !== 'All'){
-      leads = leads.filter(l => (l.status || '') === statusFilter);
-    }
-
-    if(q){
-      leads = leads.filter(l => {
-        const hay = [
-          l.customer?.name,
-          l.customer?.phone,
-          l.customer?.address,
-          l.customer?.email,
-          l.customer?.servicesNeeded
-        ].join(' ').toLowerCase();
-        return hay.includes(q);
-      });
-    }
-
-    if(!leads.length){
-      box.innerHTML = `<div class="emptyState">No leads found for this view yet.</div>`;
-      return;
-    }
-
-    box.innerHTML = leads.map(l => {
-      const active = l.id === activeLeadId ? 'active' : '';
-      const status = l.status || 'Pending';
-      const serviceBits = [];
-      if(l.services?.qtOn) serviceBits.push('QT');
-      if(l.services?.smOn) serviceBits.push('SM');
-
-      return `
-        <div class="leadCard ${active}" data-lead-id="${l.id}">
-          <div class="leadTop">
-            <div>
-              <div class="leadName">${escapeHtml(l.customer?.name || 'Untitled Lead')}</div>
-              <div class="leadMeta">${escapeHtml(l.customer?.phone || 'No phone')}</div>
-            </div>
-            <span class="badge">${escapeHtml(status)}</span>
-          </div>
-          <div class="leadMeta">
-            ${escapeHtml(l.customer?.address || 'No address')}<br>
-            ${serviceBits.join(' + ') || 'No services selected'}<br>
-            Owner: ${escapeHtml(l.owner || '—')}<br>
-            Updated: ${escapeHtml(formatDateTime(l.updatedAt) || '—')}
-          </div>
-        </div>
-      `;
-    }).join('');
-
-    box.querySelectorAll('.leadCard').forEach(card => {
-      card.addEventListener('click', () => {
-        const id = card.getAttribute('data-lead-id');
-        const lead = getLeadById(id);
-        if(lead) loadLeadToForm(lead);
-        closeDrawer();
-      });
-    });
-  }
-
-  function escapeHtml(str){
-    return String(str ?? '')
-      .replaceAll('&','&amp;')
-      .replaceAll('<','&lt;')
-      .replaceAll('>','&gt;')
-      .replaceAll('"','&quot;')
-      .replaceAll("'","&#39;");
-  }
-
-  function updatePushPreview(){
-    const sqft = parseFloat($('sqft').value);
-    const lf = parseFloat($('lf').value);
-    const qtSuggested = suggestQt(sqft);
-    const smSuggested = Number.isFinite(lf) && lf > 0 ? Math.max(SM_MIN_YEARLY, lf * SM_RATE_PER_LF) : SM_MIN_YEARLY;
-
-    const qtQuoteIn = parseFloat($('qtQuote').value);
-    const smQuoteIn = parseFloat($('smQuote').value);
-    const qtBase = Number.isFinite(qtQuoteIn) ? qtQuoteIn : qtSuggested;
-    const smBase = Number.isFinite(smQuoteIn) ? smQuoteIn : smSuggested;
-    const smInstall = Number.isFinite(parseFloat($('smInstall').value)) ? parseFloat($('smInstall').value) : 0;
-    const bundleApplies = state.bundleOn && state.qtOn && state.smOn;
-    const qtToUse = bundleApplies ? Math.max(0, qtBase - BUNDLE_DISC) : qtBase;
-
-    $('pushPreview').innerHTML = `
-      Current lead saved locally.<br>
-      Status: ${escapeHtml($('leadStatus').value)}<br>
-      QT: ${state.qtOn ? money(qtToUse) : '—'}<br>
-      SM: ${state.smOn ? money(smBase) : '—'}<br>
-      Install: ${state.smOn ? money(smInstall) : '—'}
-    `;
   }
 
   function calc(){
@@ -1054,82 +1339,162 @@
     $('qtYifRead').value = money(bundleApplies ? qtYifBundle : qtYifPlain);
     $('smMonthlyRead').value = money0(smMonthly);
     $('smYifRead').value = money(smYif);
-
-    updatePushPreview();
   }
 
-  function openDrawer(){
-    $('drawer').classList.add('show');
-    $('drawerBackdrop').classList.add('show');
-    renderLeadList();
+  function showConsoleScreen(){
+    currentScreen = 'console';
+    $('formScreen').classList.add('hide');
+    $('consoleScreen').classList.remove('hide');
+    renderConsole();
   }
 
-  function closeDrawer(){
-    $('drawer').classList.remove('show');
-    $('drawerBackdrop').classList.remove('show');
+  function showFormScreen(){
+    currentScreen = 'form';
+    $('consoleScreen').classList.add('hide');
+    $('formScreen').classList.remove('hide');
   }
 
-  function setNav(view){
-    currentView = view;
-    document.querySelectorAll('.navBtn').forEach(btn => {
-      btn.classList.toggle('active', btn.getAttribute('data-view') === view);
+  function buildFilteredLeads(){
+    const store = getStore();
+    const q = ($('consoleSearch').value || '').trim().toLowerCase();
+    const ownerFilter = $('consoleOwnerFilter').value;
+    const statusFilter = $('consoleStatusFilter').value;
+
+    let leads = [...store.leads];
+
+    if(ownerFilter !== 'All'){
+      leads = leads.filter(l => (l.owner || '') === ownerFilter);
+    }
+
+    if(statusFilter !== 'All'){
+      leads = leads.filter(l => (l.status || '') === statusFilter);
+    }
+
+    if(q){
+      leads = leads.filter(l => {
+        const hay = [
+          l.customer?.name,
+          l.customer?.phone,
+          l.customer?.address,
+          l.customer?.email,
+          l.customer?.servicesNeeded,
+          l.customer?.leadSource
+        ].join(' ').toLowerCase();
+        return hay.includes(q);
+      });
+    }
+
+    return leads;
+  }
+
+  function renderConsole(){
+    const board = $('consoleBoard');
+    const leads = buildFilteredLeads();
+
+    if(!leads.length){
+      board.innerHTML = `<div class="emptyState">No leads match the current filters.</div>`;
+      return;
+    }
+
+    board.innerHTML = STATUS_ORDER.map(status => {
+      const laneLeads = leads.filter(l => (l.status || 'Pending') === status);
+
+      return `
+        <div class="lane">
+          <div class="laneHead">
+            <div class="laneTitle">${escapeHtml(status)}</div>
+            <div class="laneCount">${laneLeads.length}</div>
+          </div>
+          <div class="laneBody">
+            ${laneLeads.length ? laneLeads.map(l => {
+              const serviceBits = [];
+              if(l.services?.qtOn) serviceBits.push('QT');
+              if(l.services?.smOn) serviceBits.push('SM');
+
+              return `
+                <div class="leadCard" data-open-lead="${l.id}">
+                  <div class="leadTop">
+                    <div>
+                      <div class="leadName">${escapeHtml(l.customer?.name || 'Untitled Lead')}</div>
+                      <div class="leadMeta">${escapeHtml(l.customer?.phone || 'No phone')}</div>
+                    </div>
+                    <span class="badge">${escapeHtml(l.owner || '—')}</span>
+                  </div>
+                  <div class="leadMeta">
+                    ${escapeHtml(l.customer?.address || 'No address')}<br>
+                    ${serviceBits.join(' + ') || 'No services selected'}<br>
+                    Updated: ${escapeHtml(formatDateTime(l.updatedAt) || '—')}
+                  </div>
+                </div>
+              `;
+            }).join('') : `<div class="emptyState">No leads here.</div>`}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    board.querySelectorAll('[data-open-lead]').forEach(el => {
+      el.addEventListener('click', () => {
+        const lead = getLeadById(el.getAttribute('data-open-lead'));
+        if(lead){
+          loadLeadToForm(lead);
+          showFormScreen();
+        }
+      });
     });
-    renderLeadList();
   }
 
-  function clearFormToLead(lead){
-    loadLeadToForm(lead);
+  function applyFunnel(type){
+    if(type === 'pending'){
+      $('consoleStatusFilter').value = 'Pending';
+      $('consoleSearch').value = '';
+    } else if(type === 'nocontact'){
+      $('consoleStatusFilter').value = 'No Contact Yet';
+      $('consoleSearch').value = '';
+    } else if(type === 'bundle'){
+      $('consoleStatusFilter').value = 'Sold Bundle';
+      $('consoleSearch').value = '';
+    } else if(type === 'sm'){
+      $('consoleStatusFilter').value = 'All';
+      $('consoleSearch').value = 'SM';
+    }
+    renderConsole();
+  }
+
+  function toggleProperties(){
+    const body = $('propertiesBody');
+    const btn = $('togglePropertiesBtn');
+    const isHidden = body.classList.toggle('hide');
+    btn.textContent = isHidden ? 'Show' : 'Hide';
   }
 
   // events
-  $('menuBtn').addEventListener('click', openDrawer);
-  $('closeMenuBtn').addEventListener('click', closeDrawer);
-  $('drawerBackdrop').addEventListener('click', closeDrawer);
+  $('menuBtn').addEventListener('click', showConsoleScreen);
+  $('returnToLeadBtn').addEventListener('click', showFormScreen);
+  $('togglePropertiesBtn').addEventListener('click', toggleProperties);
 
-  document.querySelectorAll('.navBtn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const view = btn.getAttribute('data-view');
-      setNav(view);
-      if(view === 'last'){
-        loadLastLead();
-      }
-    });
+  $('consoleSearch').addEventListener('input', renderConsole);
+  $('consoleOwnerFilter').addEventListener('change', renderConsole);
+  $('consoleStatusFilter').addEventListener('change', renderConsole);
+
+  document.querySelectorAll('.funnelFilterBtn').forEach(btn => {
+    btn.addEventListener('click', () => applyFunnel(btn.getAttribute('data-funnel')));
   });
 
-  $('leadSearch').addEventListener('input', renderLeadList);
-  $('filterStatus').addEventListener('change', renderLeadList);
-  $('refreshDrawerBtn').addEventListener('click', renderLeadList);
-  $('drawerNewLeadBtn').addEventListener('click', () => {
-    createNewLead();
-    closeDrawer();
-  });
-
+  $('newLeadFromConsoleBtn').addEventListener('click', createNewLead);
   $('newLeadBtn').addEventListener('click', createNewLead);
   $('duplicateLeadBtn').addEventListener('click', duplicateCurrentLead);
+
   $('deleteLeadBtn').addEventListener('click', () => {
     if(!activeLeadId) return;
     if(!confirm('Delete this lead?')) return;
     deleteLead(activeLeadId);
     const store = getStore();
     if(store.leads.length){
-      clearFormToLead(store.leads[0]);
+      loadLeadToForm(store.leads[0]);
     } else {
       createNewLead();
     }
-  });
-
-  $('copyBtn').addEventListener('click', () => {
-    const txt = [
-      $('qtRateDisplay').textContent,
-      $('smRateDisplay').textContent,
-      $('totalMonthlyDisplay').textContent,
-      $('bundleMonthlyDisplay').textContent
-    ].join(' | ');
-    navigator.clipboard.writeText(txt).then(() => {
-      const old = $('copyBtn').textContent;
-      $('copyBtn').textContent = 'COPIED';
-      setTimeout(() => $('copyBtn').textContent = old, 900);
-    }).catch(() => alert('Copy failed'));
   });
 
   ['chkINT','chkPS','chkWD','chkGR','chkLB','chkRS','chkAutopay'].forEach(id => {
@@ -1143,7 +1508,6 @@
   [['btnQT','qtOn'],['btnSM','smOn'],['btnYIF','yifOn'],['btnBundle','bundleOn']].forEach(([id,key]) => {
     $(id).addEventListener('click', () => {
       state[key] = !state[key];
-      if(key === 'qtOn' && !state[key] && state.bundleOn) {}
       updateTogglesUI();
       calc();
       scheduleAutosave();
@@ -1181,6 +1545,8 @@
   } else {
     createNewLead();
   }
+
+  renderConsole();
 })();
 </script>
 </body>
