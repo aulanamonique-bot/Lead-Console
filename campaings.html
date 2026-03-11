@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Campaigns</title>
+<style>
+  :root{
+    --g:#16a34a;
+    --bg:#f2fbf6;
+    --panel:#ffffff;
+    --ink:#0b1b12;
+    --muted:#5b7267;
+    --line:#b7e4c7;
+    --line2:#d9f2e3;
+    --soft:#ecfdf3;
+    --soft2:#f5fff8;
+    --shadow:0 10px 26px rgba(0,0,0,.06);
+    --r:18px;
+  }
+
+  *{box-sizing:border-box}
+
+  body{
+    margin:0;
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    color:var(--ink);
+    background:radial-gradient(1200px 700px at 20% -10%, #e7fff1 0%, var(--bg) 55%) fixed;
+    font-size:14px;
+  }
+
+  .wrap{
+    max-width:1400px;
+    margin:18px auto;
+    padding:0 14px 28px;
+    display:grid;
+    gap:14px;
+  }
+
+  .top{
+    background:rgba(255,255,255,.94);
+    border:1px solid var(--line2);
+    border-radius:16px;
+    box-shadow:var(--shadow);
+    padding:14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:14px;
+  }
+
+  .title{
+    font-size:24px;
+    font-weight:950;
+    line-height:1.1;
+  }
+
+  .sub{
+    font-size:13px;
+    font-weight:800;
+    color:var(--muted);
+    margin-top:4px;
+  }
+
+  .btn{
+    height:40px;
+    border-radius:12px;
+    padding:0 14px;
+    font-weight:850;
+    font-size:13px;
+    cursor:pointer;
+    border:1px solid transparent;
+    white-space:nowrap;
+  }
+  .btn-primary{background:var(--g);color:#fff;box-shadow:0 8px 18px rgba(22,163,74,.20)}
+  .btn-soft{background:#eafff1;color:#0d5a2b;border-color:var(--line)}
+  .btn-dark{background:#0f1d15;color:#fff}
+  .btn-danger{background:#fff1f1;color:#8a1d1d;border-color:#f5caca}
+
+  .topActions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line2);
+    border-radius:18px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+
+  .head{
+    background:var(--g);
+    color:#fff;
+    padding:11px 14px;
+    font-weight:950;
+    font-size:14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+  }
+
+  .body{
+    padding:14px;
+  }
+
+  .stack{
+    display:grid;
+    gap:14px;
+  }
+
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  .row4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px}
+
+  .field{
+    display:grid;
+    gap:5px;
+    min-width:0;
+  }
+
+  .field label{
+    font-size:11px;
+    font-weight:900;
+    color:#274536;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+  }
+
+  .field input,
+  .field select,
+  .field textarea{
+    width:100%;
+    min-width:0;
+    border:1px solid var(--line);
+    border-radius:12px;
+    background:#fff;
+    padding:9px 10px;
+    font-size:13px;
+    font-weight:700;
+    color:#0e1b12;
+    outline:none;
+  }
+
+  .field input,
+  .field select{
+    height:40px;
+  }
+
+  .field textarea{
+    min-height:120px;
+    resize:vertical;
+    line-height:1.35;
+  }
+
+  .field textarea.sms{
+    min-height:90px;
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus{
+    border-color:#6bd39a;
+    box-shadow:0 0 0 3px rgba(34,197,94,.15);
+  }
+
+  .hint{
+    font-size:12px;
+    color:var(--muted);
+    font-weight:700;
+  }
+
+  .pillWrap{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+
+  .pill{
+    font-size:11px;
+    font-weight:900;
+    border:1px solid var(--line);
+    background:var(--soft);
+    color:#214132;
+    border-radius:999px;
+    padding:5px 9px;
+    cursor:pointer;
+    user-select:none;
+  }
+
+  .builderActions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  .statusBox{
+    border:1px dashed var(--line);
+    border-radius:14px;
+    padding:12px;
+    background:#fff;
+    font-size:12px;
+    font-weight:800;
+    color:#244033;
+    line-height:1.5;
+  }
+
+  .bottomGrid{
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:14px;
+  }
+
+  .panelTools{
+    display:grid;
+    gap:12px;
+  }
+
+  .leadList{
+    display:grid;
+    gap:10px;
+    max-height:560px;
+    overflow:auto;
+    padding-right:2px;
+  }
+
+  .leadCard{
+    border:1px solid var(--line);
+    background:#fff;
+    border-radius:16px;
+    padding:12px;
+    display:grid;
+    gap:8px;
+  }
+
+  .leadTop{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    align-items:start;
+  }
+
+  .leadName{
+    font-weight:950;
+    font-size:15px;
+  }
+
+  .leadMeta{
+    font-size:12px;
+    color:#4c6257;
+    line-height:1.45;
+  }
+
+  .badge{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:999px;
+    padding:4px 8px;
+    font-size:11px;
+    font-weight:900;
+    border:1px solid var(--line);
+    background:var(--soft2);
+    color:#224233;
+  }
+
+  .leadBtns{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+
+  .queueBox{
+    border:1px solid var(--line2);
+    border-radius:16px;
+    padding:12px;
+    background:var(--soft2);
+    display:grid;
+    gap:10px;
+  }
+
+  .queueHeader{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    font-weight:950;
+  }
+
+  .previewBox{
+    border:1px dashed var(--line);
+    border-radius:14px;
+    padding:12px;
+    background:#fff;
+    display:grid;
+    gap:10px;
+  }
+
+  .previewLabel{
+    font-size:11px;
+    font-weight:900;
+    color:#325343;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+  }
+
+  .previewValue{
+    font-size:13px;
+    line-height:1.45;
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+
+  .emptyState{
+    border:1px dashed var(--line);
+    border-radius:14px;
+    padding:14px;
+    background:#fff;
+    color:#567064;
+    font-weight:800;
+  }
+
+  .smallActions{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+
+  @media (max-width:1100px){
+    .bottomGrid{grid-template-columns:1fr}
+    .row4{grid-template-columns:1fr 1fr}
+  }
+
+  @media (max-width:760px){
+    .row2,.row3,.row4{grid-template-columns:1fr}
+    .top{flex-direction:column;align-items:flex-start}
+    .topActions{width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <div class="title">Campaigns</div>
+      <div class="sub">Reusable email and text templates with lead selection, pricing overrides, and batch draft flow.</div>
+    </div>
+    <div class="topActions">
+      <a class="btn btn-soft" href="index.html">Back to Console</a>
+      <button class="btn btn-primary" id="newCampaignBtn" type="button">New Campaign</button>
+    </div>
+  </div>
+
+  <section class="card">
+    <div class="head">
+      <span>Campaign Builder</span>
+      <span id="campaignSaveState">Not saved yet</span>
+    </div>
+    <div class="body stack">
+      <div class="row4">
+        <div class="field">
+          <label>Campaign Name</label>
+          <input id="campaignName" type="text" placeholder="Winter Special">
+        </div>
+        <div class="field">
+          <label>Type</label>
+          <select id="campaignType">
+            <option value="email">Email</option>
+            <option value="text">Text</option>
+            <option value="both">Both</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Reusable Template</label>
+          <select id="campaignReusable">
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Shared</label>
+          <select id="campaignShared">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label>Tags (comma separated)</label>
+          <input id="campaignTags" type="text" placeholder="winter-special, sentricon-followup">
+        </div>
+        <div class="field">
+          <label>Default Owner Scope</label>
+          <select id="campaignOwnerScope">
+            <option value="all">All Owners</option>
+            <option value="mine">My Leads Only</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row3">
+        <div class="field">
+          <label>Status Filter</label>
+          <select id="campaignStatusFilter">
+            <option value="All">All Statuses</option>
+            <option value="Pending">Pending</option>
+            <option value="Sold QT">Sold QT</option>
+            <option value="Sold Other">Sold Other</option>
+            <option value="Declined">Declined</option>
+            <option value="Misc">Misc</option>
+            <option value="Sold Bundle">Sold Bundle</option>
+            <option value="No Contact Yet">No Contact Yet</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Require Email?</label>
+          <select id="requireEmail">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Require SM Selected?</label>
+          <select id="requireSm">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row4">
+        <div class="field">
+          <label>QT Override</label>
+          <input id="overrideQt" type="number" step="0.01" placeholder="149">
+        </div>
+        <div class="field">
+          <label>QT Initial Override</label>
+          <input id="overrideQtInitial" type="number" step="0.01" placeholder="149">
+        </div>
+        <div class="field">
+          <label>SM Annual Override</label>
+          <input id="overrideSmAnnual" type="number" step="0.01" placeholder="460">
+        </div>
+        <div class="field">
+          <label>SM Install Override</label>
+          <input id="overrideSmInstall" type="number" step="0.01" placeholder="199">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Subject Template</label>
+        <input id="subjectTemplate" type="text" placeholder="Your Winter Special from Lead Console">
+      </div>
+
+      <div class="row2">
+        <div class="field">
+          <label>Email Template</label>
+          <textarea id="emailTemplate" placeholder="Hi {firstName},&#10;&#10;Here is the quote we discussed..."></textarea>
+          <div class="hint">Used for Gmail compose.</div>
+        </div>
+        <div class="field">
+          <label>SMS Template</label>
+          <textarea id="smsTemplate" class="sms" placeholder="Hi {firstName}, your QT quote is {qtQuote}."></textarea>
+          <div class="hint">Desktop-first SMS flow will render this and let you copy it fast.</div>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Placeholders</label>
+        <div class="pillWrap" id="placeholderPills"></div>
+      </div>
+
+      <div class="builderActions">
+        <button class="btn btn-primary" id="saveCampaignBtn" type="button">Save Template</button>
+        <button class="btn btn-soft" id="applyAutoFilterBtn" type="button">Apply Filters to Eligible Leads</button>
+        <button class="btn btn-dark" id="openNextEmailBtn" type="button">Open Next Gmail Draft</button>
+        <button class="btn btn-soft" id="copyNextSmsBtn" type="button">Copy Next SMS</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="bottomGrid">
+    <section class="card">
+      <div class="head">
+        <span>Eligible Leads</span>
+        <span id="eligibleCount">0</span>
+      </div>
+      <div class="body panelTools">
+        <div class="row3">
+          <div class="field">
+            <label>Search Leads</label>
+            <input id="eligibleSearch" type="text" placeholder="Name, phone, address">
+          </div>
+          <div class="field">
+            <label>Owner</label>
+            <select id="eligibleOwnerFilter">
+              <option value="All">All Owners</option>
+              <option value="My Desk">My Desk</option>
+              <option value="CSR 1">CSR 1</option>
+              <option value="CSR 2">CSR 2</option>
+              <option value="CSR 3">CSR 3</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Status</label>
+            <select id="eligibleStatusFilter">
+              <option value="All">All Statuses</option>
+              <option value="Pending">Pending</option>
+              <option value="Sold QT">Sold QT</option>
+              <option value="Sold Other">Sold Other</option>
+              <option value="Declined">Declined</option>
+              <option value="Misc">Misc</option>
+              <option value="Sold Bundle">Sold Bundle</option>
+              <option value="No Contact Yet">No Contact Yet</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="smallActions">
+          <button class="btn btn-soft" id="addAllVisibleBtn" type="button">Add All Visible</button>
+        </div>
+
+        <div class="leadList" id="eligibleLeadList"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="head">
+        <span>Selected Leads / Batch Queue</span>
+        <span id="selectedCount">0</span>
+      </div>
+      <div class="body stack">
+        <div class="queueBox">
+          <div class="queueHeader">
+            <span id="queuePosition">Queue: 0 / 0</span>
+            <div class="smallActions">
+              <button class="btn btn-soft" id="prevLeadBtn" type="button">Prev</button>
+              <button class="btn btn-soft" id="nextLeadBtn" type="button">Next</button>
+              <button class="btn btn-danger" id="clearSelectedBtn" type="button">Clear</button>
+            </div>
+          </div>
+
+          <div class="previewBox">
+            <div>
+              <div class="previewLabel">Current Lead</div>
+              <div class="previewValue" id="currentLeadPreview">No lead selected.</div>
+            </div>
+
+            <div>
+              <div class="previewLabel">Rendered Subject</div>
+              <div class="previewValue" id="renderedSubject">—</div>
+            </div>
+
+            <div>
+              <div class="previewLabel">Rendered Email</div>
+              <div class="previewValue" id="renderedEmail">—</div>
+            </div>
+
+            <div>
+              <div class="previewLabel">Rendered SMS</div>
+              <div class="previewValue" id="renderedSms">—</div>
+            </div>
+          </div>
+
+          <div class="statusBox" id="campaignStatusBox">
+            Campaign queue ready.<br>
+            Open Gmail one lead at a time in sequence.
+          </div>
+        </div>
+
+        <div class="leadList" id="selectedLeadList"></div>
+      </div>
+    </section>
+  </div>
+</div>
+
+<script>
+(() => {
+  const LEAD_STORAGE_KEY = 'kindLeadConsole.v4';
+  const CAMPAIGN_STORAGE_KEY = 'leadConsole.campaigns.v1';
+
+  const PLACEHOLDERS = [
+    'firstName','fullName','email','phone','address',
+    'qtQuote','qtMonthly','qtInitial',
+    'smAnnual','smInstall',
+    'bundleMonthly','yif',
+    'owner','status'
+  ];
+
+  let selectedLeadIds = [];
+  let queueIndex = 0;
+
+  const $ = (id) => document.getElementById(id);
+
+  function money(n){
+    const x = Number.isFinite(n) ? n : 0;
+    return x.toLocaleString(undefined,{style:'currency',currency:'USD'});
+  }
+
+  function money0(n){
+    const x = Number.isFinite(n) ? n : 0;
+    return x.toLocaleString(undefined,{style:'currency',currency:'USD',maximumFractionDigits:0});
+  }
+
+  function escapeHtml(str){
+    return String(str ?? '')
+      .replaceAll('&','&amp;')
+      .replaceAll('<','&lt;')
+      .replaceAll('>','&gt;')
+      .replaceAll('"','&quot;')
+      .replaceAll("'","&#39;");
+  }
+
+  function getLeadStore(){
+    try{
+      return JSON.parse(localStorage.getItem(LEAD_STORAGE_KEY)) || { leads: [] };
+    } catch {
+      return { leads: [] };
+    }
+  }
+
+  function setLeadStore(store){
+    localStorage.setItem(LEAD_STORAGE_KEY, JSON.stringify(store));
+  }
+
+  function getCampaignStore(){
+    try{
+      return JSON.parse(localStorage.getItem(CAMPAIGN_STORAGE_KEY)) || { campaigns: [] };
+    } catch {
+      return { campaigns: [] };
+    }
+  }
+
+  function setCampaignStore(store){
+    localStorage.setItem(CAMPAIGN_STORAGE_KEY, JSON.stringify(store));
+  }
+
+  function getLeadById(id){
+    return getLeadStore().leads.find(l => l.id === id) || null;
+  }
+
+  function getFirstName(fullName){
+    const txt = String(fullName || '').trim();
+    if(!txt) return '';
+    return txt.split(/\s+/)[0];
+  }
+
+  function computeLeadPricing(lead){
+    const sqft = parseFloat(lead.measurements?.sqft);
+    const lf = parseFloat(lead.measurements?.lf);
+
+    const qtSuggested = suggestQt(sqft);
+    const smSuggested = Number.isFinite(lf) && lf > 0 ? Math.max(300, lf * 1.5) : 300;
+
+    const qtBase = Number.isFinite(parseFloat(lead.pricing?.qtQuote)) ? parseFloat(lead.pricing.qtQuote) : qtSuggested;
+    const qtInitial = Number.isFinite(parseFloat(lead.pricing?.qtInit)) ? parseFloat(lead.pricing.qtInit) : qtBase;
+    const smAnnual = Number.isFinite(parseFloat(lead.pricing?.smQuote)) ? parseFloat(lead.pricing.smQuote) : smSuggested;
+    const smInstall = Number.isFinite(parseFloat(lead.pricing?.smInstall)) ? parseFloat(lead.pricing.smInstall) : 0;
+
+    const qtOn = !!lead.services?.qtOn;
+    const smOn = !!lead.services?.smOn;
+    const yifOn = !!lead.services?.yifOn;
+    const bundleOn = !!lead.services?.bundleOn;
+    const bundleApplies = bundleOn && qtOn && smOn;
+
+    const qtUsed = qtOn ? (bundleApplies ? Math.max(0, qtBase - 10) : qtBase) : 0;
+    const qtMonthly = qtOn ? Math.ceil(qtUsed / 3) : 0;
+    const smMonthly = smOn ? Math.ceil(smAnnual / 12) : 0;
+    const bundleMonthly = qtMonthly + smMonthly;
+
+    let yif = 0;
+    if(qtOn){
+      yif += (qtUsed * 4) + qtInitial;
+    }
+    if(smOn){
+      yif += smAnnual + smInstall;
+    }
+    if(yifOn){
+      yif = yif * 0.95;
+    }
+
+    return {
+      qtQuote: qtUsed,
+      qtMonthly,
+      qtInitial,
+      smAnnual: smOn ? smAnnual : 0,
+      smInstall: smOn ? smInstall : 0,
+      bundleMonthly,
+      yif
+    };
+  }
+
+  function suggestQt(sqft){
+    const tiers = [
+      {min:1000,max:1499,qt:139},
+      {min:1500,max:2499,qt:159},
+      {min:2500,max:3499,qt:179},
+      {min:3500,max:3999,qt:199},
+      {min:4000,max:4499,qt:209},
+      {min:4500,max:999999,qt:219},
+    ];
+    const s = Number(sqft);
+    if(!Number.isFinite(s) || s <= 0) return 0;
+    for(const t of tiers){
+      if(s >= t.min && s <= t.max) return t.qt;
+    }
+    return 0;
+  }
+
+  function getCampaignValues(){
+    return {
+      name: $('campaignName').value.trim(),
+      type: $('campaignType').value,
+      reusable: $('campaignReusable').value,
+      shared: $('campaignShared').value,
+      tags: $('campaignTags').value.trim(),
+      ownerScope: $('campaignOwnerScope').value,
+      statusFilter: $('campaignStatusFilter').value,
+      requireEmail: $('requireEmail').value,
+      requireSm: $('requireSm').value,
+      overrideQt: $('overrideQt').value,
+      overrideQtInitial: $('overrideQtInitial').value,
+      overrideSmAnnual: $('overrideSmAnnual').value,
+      overrideSmInstall: $('overrideSmInstall').value,
+      subjectTemplate: $('subjectTemplate').value,
+      emailTemplate: $('emailTemplate').value,
+      smsTemplate: $('smsTemplate').value
+    };
+  }
+
+  function applyOverrides(pricing, campaign){
+    const out = { ...pricing };
+
+    if(campaign.overrideQt !== ''){
+      out.qtQuote = Number(campaign.overrideQt);
+      out.qtMonthly = Math.ceil(out.qtQuote / 3);
+    }
+    if(campaign.overrideQtInitial !== ''){
+      out.qtInitial = Number(campaign.overrideQtInitial);
+    }
+    if(campaign.overrideSmAnnual !== ''){
+      out.smAnnual = Number(campaign.overrideSmAnnual);
+    }
+    if(campaign.overrideSmInstall !== ''){
+      out.smInstall = Number(campaign.overrideSmInstall);
+    }
+
+    out.bundleMonthly = (out.qtMonthly || 0) + (out.smAnnual ? Math.ceil(out.smAnnual / 12) : 0);
+    out.yif = (out.qtQuote ? (out.qtQuote * 4) + out.qtInitial : 0) + (out.smAnnual || 0) + (out.smInstall || 0);
+
+    return out;
+  }
+
+  function renderText(template, lead, pricing){
+    const replacements = {
+      firstName: getFirstName(lead.customer?.name),
+      fullName: lead.customer?.name || '',
+      email: lead.customer?.email || '',
+      phone: lead.customer?.phone || '',
+      address: lead.customer?.address || '',
+      qtQuote: pricing.qtQuote ? money(pricing.qtQuote) : '',
+      qtMonthly: pricing.qtMonthly ? money0(pricing.qtMonthly) + '/mo' : '',
+      qtInitial: pricing.qtInitial ? money(pricing.qtInitial) : '',
+      smAnnual: pricing.smAnnual ? money(pricing.smAnnual) : '',
+      smInstall: pricing.smInstall ? money(pricing.smInstall) : '',
+      bundleMonthly: pricing.bundleMonthly ? money0(pricing.bundleMonthly) + '/mo' : '',
+      yif: pricing.yif ? money(pricing.yif) : '',
+      owner: lead.owner || '',
+      status: lead.status || ''
+    };
+
+    return String(template || '').replace(/\{([a-zA-Z0-9_]+)\}/g, (_, key) => {
+      return replacements[key] ?? '';
+    });
+  }
+
+  function getEligibleLeads(){
+    const store = getLeadStore();
+    const search = $('eligibleSearch').value.trim().toLowerCase();
+    const owner = $('eligibleOwnerFilter').value;
+    const status = $('eligibleStatusFilter').value;
+
+    let leads = [...store.leads].sort((a,b) => new Date(b.updatedAt || 0) - new Date(a.updatedAt || 0));
+
+    if(owner !== 'All'){
+      leads = leads.filter(l => (l.owner || '') === owner);
+    }
+
+    if(status !== 'All'){
+      leads = leads.filter(l => (l.status || '') === status);
+    }
+
+    if(search){
+      leads = leads.filter(l => {
+        const hay = [
+          l.customer?.name,
+          l.customer?.phone,
+          l.customer?.email,
+          l.customer?.address,
+          l.customer?.servicesNeeded
+        ].join(' ').toLowerCase();
+        return hay.includes(search);
+      });
+    }
+
+    return leads;
+  }
+
+  function applyCampaignFiltersToEligible(){
+    $('eligibleStatusFilter').value = $('campaignStatusFilter').value;
+    if($('campaignOwnerScope').value === 'mine'){
+      $('eligibleOwnerFilter').value = 'My Desk';
+    }
+    renderEligibleLeads();
+    $('campaignStatusBox').innerHTML = 'Campaign filters applied to eligible leads.<br>Now select leads or add all visible.';
+  }
+
+  function renderEligibleLeads(){
+    const list = $('eligibleLeadList');
+    const leads = getEligibleLeads().filter(l => !selectedLeadIds.includes(l.id));
+    $('eligibleCount').textContent = String(leads.length);
+
+    if(!leads.length){
+      list.innerHTML = `<div class="emptyState">No eligible leads match the current filters.</div>`;
+      return;
+    }
+
+    list.innerHTML = leads.map(l => {
+      const serviceBits = [];
+      if(l.services?.qtOn) serviceBits.push('QT');
+      if(l.services?.smOn) serviceBits.push('SM');
+
+      return `
+        <div class="leadCard">
+          <div class="leadTop">
+            <div>
+              <div class="leadName">${escapeHtml(l.customer?.name || 'Untitled Lead')}</div>
+              <div class="leadMeta">${escapeHtml(l.customer?.phone || 'No phone')}</div>
+            </div>
+            <span class="badge">${escapeHtml(l.status || 'Pending')}</span>
+          </div>
+          <div class="leadMeta">
+            ${escapeHtml(l.customer?.address || 'No address')}<br>
+            ${serviceBits.join(' + ') || 'No services selected'}<br>
+            Owner: ${escapeHtml(l.owner || '—')}
+          </div>
+          <div class="leadBtns">
+            <button class="btn btn-soft addLeadBtn" data-id="${l.id}" type="button">Add to Campaign</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    list.querySelectorAll('.addLeadBtn').forEach(btn => {
+      btn.addEventListener('click', () => addLeadToSelected(btn.dataset.id));
+    });
+  }
+
+  function addLeadToSelected(id){
+    if(!selectedLeadIds.includes(id)){
+      selectedLeadIds.push(id);
+    }
+    if(selectedLeadIds.length === 1){
+      queueIndex = 0;
+    }
+    renderEligibleLeads();
+    renderSelectedLeads();
+  }
+
+  function removeLeadFromSelected(id){
+    selectedLeadIds = selectedLeadIds.filter(x => x !== id);
+    if(queueIndex >= selectedLeadIds.length){
+      queueIndex = Math.max(0, selectedLeadIds.length - 1);
+    }
+    renderEligibleLeads();
+    renderSelectedLeads();
+  }
+
+  function renderSelectedLeads(){
+    const list = $('selectedLeadList');
+    const leads = selectedLeadIds.map(getLeadById).filter(Boolean);
+    $('selectedCount').textContent = String(leads.length);
+    $('queuePosition').textContent = `Queue: ${leads.length ? queueIndex + 1 : 0} / ${leads.length}`;
+
+    if(!leads.length){
+      list.innerHTML = `<div class="emptyState">No leads selected for this campaign yet.</div>`;
+      $('currentLeadPreview').textContent = 'No lead selected.';
+      $('renderedSubject').textContent = '—';
+      $('renderedEmail').textContent = '—';
+      $('renderedSms').textContent = '—';
+      return;
+    }
+
+    list.innerHTML = leads.map((l, idx) => `
+      <div class="leadCard">
+        <div class="leadTop">
+          <div>
+            <div class="leadName">${escapeHtml(l.customer?.name || 'Untitled Lead')}</div>
+            <div class="leadMeta">${escapeHtml(l.customer?.phone || 'No phone')}</div>
+          </div>
+          <span class="badge">${idx === queueIndex ? 'Current' : 'Queued'}</span>
+        </div>
+        <div class="leadMeta">
+          ${escapeHtml(l.customer?.email || 'No email')}<br>
+          ${escapeHtml(l.customer?.address || 'No address')}
+        </div>
+        <div class="leadBtns">
+          <button class="btn btn-soft makeCurrentBtn" data-id="${l.id}" type="button">Make Current</button>
+          <button class="btn btn-danger removeLeadBtn" data-id="${l.id}" type="button">Remove</button>
+        </div>
+      </div>
+    `).join('');
+
+    list.querySelectorAll('.makeCurrentBtn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = selectedLeadIds.indexOf(btn.dataset.id);
+        if(idx >= 0){
+          queueIndex = idx;
+          renderSelectedLeads();
+        }
+      });
+    });
+
+    list.querySelectorAll('.removeLeadBtn').forEach(btn => {
+      btn.addEventListener('click', () => removeLeadFromSelected(btn.dataset.id));
+    });
+
+    renderCurrentLeadPreview();
+  }
+
+  function getCurrentLead(){
+    if(!selectedLeadIds.length) return null;
+    return getLeadById(selectedLeadIds[queueIndex]) || null;
+  }
+
+  function renderCurrentLeadPreview(){
+    const lead = getCurrentLead();
+    if(!lead){
+      $('currentLeadPreview').textContent = 'No lead selected.';
+      $('renderedSubject').textContent = '—';
+      $('renderedEmail').textContent = '—';
+      $('renderedSms').textContent = '—';
+      return;
+    }
+
+    const campaign = getCampaignValues();
+    const pricing = applyOverrides(computeLeadPricing(lead), campaign);
+
+    const subject = renderText(campaign.subjectTemplate, lead, pricing);
+    const emailBody = renderText(campaign.emailTemplate, lead, pricing);
+    const smsBody = renderText(campaign.smsTemplate, lead, pricing);
+
+    $('currentLeadPreview').textContent = [
+      lead.customer?.name || 'Untitled Lead',
+      lead.customer?.email || 'No email',
+      lead.customer?.phone || 'No phone',
+      lead.customer?.address || 'No address'
+    ].join('\n');
+
+    $('renderedSubject').textContent = subject || '—';
+    $('renderedEmail').textContent = emailBody || '—';
+    $('renderedSms').textContent = smsBody || '—';
+  }
+
+  function insertPlaceholder(name){
+    const token = `{${name}}`;
+    const active = document.activeElement;
+    if(!active || !('value' in active)) return;
+    const start = active.selectionStart ?? active.value.length;
+    const end = active.selectionEnd ?? active.value.length;
+    const current = active.value;
+    active.value = current.slice(0, start) + token + current.slice(end);
+    active.focus();
+    active.selectionStart = active.selectionEnd = start + token.length;
+    active.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  function buildGmailUrl(lead, campaign){
+    const pricing = applyOverrides(computeLeadPricing(lead), campaign);
+    const subject = renderText(campaign.subjectTemplate, lead, pricing);
+    const body = renderText(campaign.emailTemplate, lead, pricing);
+    const to = lead.customer?.email || '';
+
+    const params = new URLSearchParams({
+      view: 'cm',
+      fs: '1',
+      to,
+      su: subject,
+      body
+    });
+
+    return `https://mail.google.com/mail/?${params.toString()}`;
+  }
+
+  function openNextEmailDraft(){
+    const lead = getCurrentLead();
+    if(!lead){
+      $('campaignStatusBox').innerHTML = 'No selected lead in queue.<br>Add leads first.';
+      return;
+    }
+
+    if(!lead.customer?.email){
+      $('campaignStatusBox').innerHTML = 'Current lead has no email.<br>Move to the next lead or update this lead first.';
+      return;
+    }
+
+    const campaign = getCampaignValues();
+    window.open(buildGmailUrl(lead, campaign), '_blank');
+
+    appendCampaignHistory(lead.id, campaign.name || 'Untitled Campaign', 'email');
+    $('campaignStatusBox').innerHTML = `Opened Gmail draft for ${escapeHtml(lead.customer?.name || 'lead')}.<br>Queue advanced to next lead.`;
+
+    if(queueIndex < selectedLeadIds.length - 1){
+      queueIndex += 1;
+    }
+    renderSelectedLeads();
+  }
+
+  function copyNextSms(){
+    const lead = getCurrentLead();
+    if(!lead){
+      $('campaignStatusBox').innerHTML = 'No selected lead in queue.<br>Add leads first.';
+      return;
+    }
+
+    const campaign = getCampaignValues();
+    const pricing = applyOverrides(computeLeadPricing(lead), campaign);
+    const sms = renderText(campaign.smsTemplate, lead, pricing);
+
+    navigator.clipboard.writeText(sms).then(() => {
+      appendCampaignHistory(lead.id, campaign.name || 'Untitled Campaign', 'text');
+      $('campaignStatusBox').innerHTML = `Copied SMS for ${escapeHtml(lead.customer?.name || 'lead')}.<br>Queue advanced to next lead.`;
+      if(queueIndex < selectedLeadIds.length - 1){
+        queueIndex += 1;
+      }
+      renderSelectedLeads();
+    }).catch(() => {
+      $('campaignStatusBox').innerHTML = 'Could not copy SMS automatically.<br>You can still copy it manually from the preview.';
+    });
+  }
+
+  function appendCampaignHistory(leadId, campaignName, channel){
+    const store = getLeadStore();
+    const idx = store.leads.findIndex(l => l.id === leadId);
+    if(idx < 0) return;
+
+    const lead = store.leads[idx];
+    if(!lead.campaignHistory) lead.campaignHistory = [];
+    lead.campaignHistory.unshift({
+      campaignName,
+      channel,
+      date: new Date().toISOString()
+    });
+
+    const tagText = $('campaignTags').value.trim();
+    if(tagText){
+      const tags = tagText.split(',').map(t => t.trim()).filter(Boolean);
+      if(!lead.tags) lead.tags = [];
+      tags.forEach(tag => {
+        if(!lead.tags.includes(tag)) lead.tags.push(tag);
+      });
+    }
+
+    const campaign = getCampaignValues();
+    const currentPricing = computeLeadPricing(lead);
+    const overridden = applyOverrides(currentPricing, campaign);
+
+    // update pricing in the lead if overrides were used
+    if(campaign.overrideQt !== '') lead.pricing.qtQuote = String(overridden.qtQuote);
+    if(campaign.overrideQtInitial !== '') lead.pricing.qtInit = String(overridden.qtInitial);
+    if(campaign.overrideSmAnnual !== '') lead.pricing.smQuote = String(overridden.smAnnual);
+    if(campaign.overrideSmInstall !== '') lead.pricing.smInstall = String(overridden.smInstall);
+
+    lead.updatedAt = new Date().toISOString();
+    store.leads[idx] = lead;
+    setLeadStore(store);
+  }
+
+  function saveCampaign(){
+    const campaign = getCampaignValues();
+    if(!campaign.name){
+      $('campaignStatusBox').innerHTML = 'Campaign name is required before saving.';
+      return;
+    }
+
+    const store = getCampaignStore();
+    const existingIdx = store.campaigns.findIndex(c => c.name.toLowerCase() === campaign.name.toLowerCase());
+
+    const payload = {
+      ...campaign,
+      savedAt: new Date().toISOString()
+    };
+
+    if(existingIdx >= 0){
+      store.campaigns[existingIdx] = payload;
+    } else {
+      store.campaigns.unshift(payload);
+    }
+
+    setCampaignStore(store);
+    $('campaignSaveState').textContent = `Saved ${new Date().toLocaleTimeString()}`;
+    $('campaignStatusBox').innerHTML = `Saved reusable template: ${escapeHtml(campaign.name)}.`;
+  }
+
+  function resetCampaignBuilder(){
+    $('campaignName').value = '';
+    $('campaignType').value = 'email';
+    $('campaignReusable').value = 'yes';
+    $('campaignShared').value = 'no';
+    $('campaignTags').value = '';
+    $('campaignOwnerScope').value = 'all';
+    $('campaignStatusFilter').value = 'All';
+    $('requireEmail').value = 'no';
+    $('requireSm').value = 'no';
+    $('overrideQt').value = '';
+    $('overrideQtInitial').value = '';
+    $('overrideSmAnnual').value = '';
+    $('overrideSmInstall').value = '';
+    $('subjectTemplate').value = '';
+    $('emailTemplate').value = '';
+    $('smsTemplate').value = '';
+    $('campaignSaveState').textContent = 'Not saved yet';
+    $('campaignStatusBox').innerHTML = 'Campaign builder cleared.';
+    renderCurrentLeadPreview();
+  }
+
+  function addAllVisibleLeads(){
+    const leads = getEligibleLeads();
+    leads.forEach(l => {
+      if(!selectedLeadIds.includes(l.id)){
+        selectedLeadIds.push(l.id);
+      }
+    });
+    renderEligibleLeads();
+    renderSelectedLeads();
+  }
+
+  function loadSavedCampaignsIfAny(){
+    const store = getCampaignStore();
+    if(!store.campaigns.length) return;
+
+    const first = store.campaigns[0];
+    $('campaignName').value = first.name || '';
+    $('campaignType').value = first.type || 'email';
+    $('campaignReusable').value = first.reusable || 'yes';
+    $('campaignShared').value = first.shared || 'no';
+    $('campaignTags').value = first.tags || '';
+    $('campaignOwnerScope').value = first.ownerScope || 'all';
+    $('campaignStatusFilter').value = first.statusFilter || 'All';
+    $('requireEmail').value = first.requireEmail || 'no';
+    $('requireSm').value = first.requireSm || 'no';
+    $('overrideQt').value = first.overrideQt || '';
+    $('overrideQtInitial').value = first.overrideQtInitial || '';
+    $('overrideSmAnnual').value = first.overrideSmAnnual || '';
+    $('overrideSmInstall').value = first.overrideSmInstall || '';
+    $('subjectTemplate').value = first.subjectTemplate || '';
+    $('emailTemplate').value = first.emailTemplate || '';
+    $('smsTemplate').value = first.smsTemplate || '';
+    $('campaignSaveState').textContent = `Loaded ${first.name}`;
+  }
+
+  function renderPlaceholderPills(){
+    $('placeholderPills').innerHTML = PLACEHOLDERS.map(name =>
+      `<span class="pill" data-placeholder="${name}">{${name}}</span>`
+    ).join('');
+
+    $('placeholderPills').querySelectorAll('[data-placeholder]').forEach(el => {
+      el.addEventListener('click', () => insertPlaceholder(el.dataset.placeholder));
+    });
+  }
+
+  // events
+  $('eligibleSearch').addEventListener('input', renderEligibleLeads);
+  $('eligibleOwnerFilter').addEventListener('change', renderEligibleLeads);
+  $('eligibleStatusFilter').addEventListener('change', renderEligibleLeads);
+
+  [
+    'campaignName','campaignType','campaignReusable','campaignShared','campaignTags',
+    'campaignOwnerScope','campaignStatusFilter','requireEmail','requireSm',
+    'overrideQt','overrideQtInitial','overrideSmAnnual','overrideSmInstall',
+    'subjectTemplate','emailTemplate','smsTemplate'
+  ].forEach(id => {
+    $(id).addEventListener('input', renderCurrentLeadPreview);
+    $(id).addEventListener('change', renderCurrentLeadPreview);
+  });
+
+  $('applyAutoFilterBtn').addEventListener('click', applyCampaignFiltersToEligible);
+  $('saveCampaignBtn').addEventListener('click', saveCampaign);
+  $('newCampaignBtn').addEventListener('click', resetCampaignBuilder);
+  $('addAllVisibleBtn').addEventListener('click', addAllVisibleLeads);
+  $('clearSelectedBtn').addEventListener('click', () => {
+    selectedLeadIds = [];
+    queueIndex = 0;
+    renderEligibleLeads();
+    renderSelectedLeads();
+  });
+
+  $('prevLeadBtn').addEventListener('click', () => {
+    if(queueIndex > 0){
+      queueIndex -= 1;
+      renderSelectedLeads();
+    }
+  });
+
+  $('nextLeadBtn').addEventListener('click', () => {
+    if(queueIndex < selectedLeadIds.length - 1){
+      queueIndex += 1;
+      renderSelectedLeads();
+    }
+  });
+
+  $('openNextEmailBtn').addEventListener('click', openNextEmailDraft);
+  $('copyNextSmsBtn').addEventListener('click', copyNextSms);
+
+  // init
+  renderPlaceholderPills();
+  loadSavedCampaignsIfAny();
+  renderEligibleLeads();
+  renderSelectedLeads();
+})();
+</script>
+</body>
+</html>
